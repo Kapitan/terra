@@ -1,6 +1,6 @@
 resource "aws_security_group" "ssh" {
-    name = "terrasshtest"
-    description = "Scurity policies."
+    name = "terrassh"
+    description = "second hw group"
 
     ingress {
         from_port = 22
