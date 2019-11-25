@@ -13,9 +13,11 @@ data "aws_ami" "centos" {
   owners = ["679593333241"]
 }
 resource "aws_instance" "web" {
-  ami           = "${data.aws_ami.centos.id}"
-  instance_type = "t2.micro"
+  ami = "${data.aws_ami.centos.id}"
+  vpc_security_group_ids = ["${aws_security_group.ssh.id}"]
+  key_name = "${var.aws_key}"  
+  instance_type = "${var.itype}"
   tags = {
-    Name = "HelloWorld"
+    Name = "second hw"
   }
 }

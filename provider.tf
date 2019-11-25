@@ -1,5 +1,5 @@
 provider "aws" {
- region		= "eu-central-1"
+ region		= "${var.reg}"
  shared_credentials_file = "/home/user/terraform/test"
  profile	= "test"
 }
