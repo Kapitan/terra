@@ -21,3 +21,20 @@ resource "aws_instance" "web" {
     Name = "second hw"
   }
 }
+resource "null_resource" "example_provisioner" {
+
+    connection {
+      type = "ssh"
+      host = "${aws_instance.web.public_ip}"
+      user = "${var.suser}"
+      private_key = "${file("/home/user/.ssh/testkye.pem")}"
+      port = "${var.sport}"
+      agent = true
+    }
+
+    provisioner "remote-exec" {
+      inline = [
+        "sudo yum update -y",
+      ]
+    }
+  }
