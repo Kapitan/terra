@@ -20,6 +20,9 @@ resource "aws_instance" "web" {
   tags = {
     Name = "second hw"
   }
+  root_block_device {
+    delete_on_termination = true
+  }
 }
 resource "null_resource" "example_provisioner" {
 
