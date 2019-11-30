@@ -1,2 +1,6 @@
 HM to 26.11.2019 terraform add security group and ssh key
-third commit add NAT 
+third commit add NAT  
+$ terraform init
+$ terraform plan   
+$ terraform apply
+$ terraform destroy
