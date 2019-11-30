@@ -21,12 +21,6 @@ nginx default conf nginx + jenkins
 server {
     listen 80;
     server_name jenkins.domain.tld;
-    return 301 https://$host$request_uri;
-}
- 
-server {
-    listen 80;
-    server_name jenkins.domain.tld;
      
     location / {
       proxy_set_header        Host $host:$server_port;
