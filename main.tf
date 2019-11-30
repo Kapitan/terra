@@ -37,7 +37,21 @@ resource "null_resource" "example_provisioner" {
 
     provisioner "remote-exec" {
       inline = [
-        "sudo yum update -y",
+        "sudo setenforce 0",
+        "sudo yum repolist",
+        "sudo echo '${file("/home/user/terraform/testaws/nginx.repo")}' > ~/nginx.repo",
+        "sudo cp ~/nginx.repo /etc/yum.repos.d/nginx.repo",
+        "sudo yum -y install epel-release",
+        "sudo yum -y install nginx",
+        "sudo yum -y install wget",
+        "sudo wget  -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo",
+        "sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key",
+        "sudo yum -y install java-1.8.0-openjdk.x86_64",
+        "sudo yum -y install jenkins",
+        "sudo echo '${file("/home/user/terraform/testaws/nginx.def")}' > ~/default.conf",
+        "sudo cp ~/default.conf /etc/nginx/conf.d/default.conf",
+        "sudo systemctl restart nginx",
+        "sudo systemctl start jenkins",
       ]
     }
   }
