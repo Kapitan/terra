@@ -56,21 +56,20 @@ resource "null_resource" "example_provisioner" {
         "sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key",
         "sudo yum -y install java-1.8.0-openjdk.x86_64",
         "sudo yum -y install jenkins",
-        "sudo echo '${file("/home/user/terraform/testaws/nginx.def")}' > ~/default.conf",
-        "sudo cp ~/default.conf /etc/nginx/conf.d/default.conf",
-        "sudo systemctl restart nginx",
+        #"sudo echo '${file("/home/user/terraform/testaws/nginx.def")}' > ~/default.conf",
+        #"sudo cp ~/default.conf /etc/nginx/conf.d/default.conf",
+        #"sudo systemctl restart nginx",
         "sudo systemctl start jenkins",
       ]
     }
     provisioner "file" {
     #  source      = "conf/myapp.conf"
-     destination = "/etc/nginx/conf.d/jenkinsaws.com"
+     destination = "~/jenkinsaws.com"
      content = "${templatefile("/home/user/terraform/testaws/nginx.tpl", {serverip = "${aws_instance.web.public_ip}"})}"
      }
      provisioner "remote-exec" {
       inline = [
-        "sudo chown root:roo /etc/nginx/conf.d/jenkinsaws.com",
-        "sudo chmod 644 /etc/nginx/conf.d/jenkinsaws.com",
+        "sudo cp ~/jenkinsaws.com /etc/nginx/conf.d/default.conf",
         "sudo systemctl restart nginx",
       ]
     }
