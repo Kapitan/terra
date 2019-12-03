@@ -64,7 +64,14 @@ resource "null_resource" "example_provisioner" {
     }
     provisioner "file" {
     #  source      = "conf/myapp.conf"
-     destination = "/home/centos/myapp.conf"
+     destination = "/etc/nginx/conf.d/jenkinsaws.com"
      content = "${templatefile("/home/user/terraform/testaws/nginx.tpl", {serverip = "${aws_instance.web.public_ip}"})}"
      }
+     provisioner "remote-exec" {
+      inline = [
+        "sudo chown root:roo /etc/nginx/conf.d/jenkinsaws.com",
+        "sudo chmod 644 /etc/nginx/conf.d/jenkinsaws.com",
+        "sudo systemctl restart nginx",
+      ]
+    }
   }
