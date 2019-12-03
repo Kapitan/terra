@@ -24,6 +24,14 @@ resource "aws_instance" "web" {
     delete_on_termination = true
   }
 }
+
+#data "template_file" "init" {
+#  template = "${file("${path.module}/home/user/terraform/testaws/nginx.def")}"
+#  destination = "~/default.conf"
+#  vars = {
+#    consul_address = "${aws_instance.web.private_ip}"
+#  }
+#}
 resource "null_resource" "example_provisioner" {
 
     connection {
@@ -54,4 +62,9 @@ resource "null_resource" "example_provisioner" {
         "sudo systemctl start jenkins",
       ]
     }
+    provisioner "file" {
+    #  source      = "conf/myapp.conf"
+     destination = "/home/centos/myapp.conf"
+     content = "${templatefile("/home/user/terraform/testaws/nginx.tpl", {serverip = "${aws_instance.web.public_ip}"})}"
+     }
   }

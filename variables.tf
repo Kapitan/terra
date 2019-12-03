@@ -3,3 +3,4 @@ variable "reg" {}
 variable "itype" {}
 variable "suser" {}
 variable "sport" {}
+variable "ip" {}
