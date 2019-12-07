@@ -1,0 +1,8 @@
+[Unit]
+Description=Run Forest run
+After=network-online.target
+
+[Service]
+ExecStart=/bin/bash /etc/rundeck.cfg
+Type=simple
+RemainAfterExit=yes

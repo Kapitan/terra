@@ -25,6 +25,10 @@ resource "aws_instance" "web" {
   }
 }
 
+output "instance_ip_addr" {
+  value = "ssh -i ./.ssh/testkye.pem centos@${aws_instance.web.public_ip}"
+}
+
 #data "template_file" "init" {
 #  template = "${file("${path.module}/home/user/terraform/testaws/nginx.def")}"
 #  destination = "~/default.conf"
@@ -48,7 +52,11 @@ resource "null_resource" "example_provisioner" {
         "sudo setenforce 0",
         "sudo yum repolist",
         "sudo echo '${file("/home/user/terraform/testaws/nginx.repo")}' > ~/nginx.repo",
+        "sudo echo '${file("/home/user/terraform/testaws/run.dem")}' > ~/rundeck.cfg",
+        "sudo echo '${file("/home/user/terraform/testaws/run.service")}' > ~/rundeck.service",
         "sudo cp ~/nginx.repo /etc/yum.repos.d/nginx.repo",
+        "sudo cp ~/rundeck.cfg /etc/rundeck.cfg",
+        "sudo cp ~/rundeck.service /lib/systemd/system/rundeck.service",
         "sudo yum -y install epel-release",
         "sudo yum -y install nginx",
         "sudo yum -y install wget",
@@ -59,7 +67,8 @@ resource "null_resource" "example_provisioner" {
         #"sudo echo '${file("/home/user/terraform/testaws/nginx.def")}' > ~/default.conf",
         #"sudo cp ~/default.conf /etc/nginx/conf.d/default.conf",
         #"sudo systemctl restart nginx",
-        "sudo systemctl start jenkins",
+        "wget https://dl.bintray.com/rundeck/rundeck-maven/rundeck-3.1.3-20191204.war",
+        "sudo cp ~/rundeck-3.1.3-20191204.war /opt/rundeck-3.1.3-20191204.war",
       ]
     }
     provisioner "file" {
@@ -70,7 +79,10 @@ resource "null_resource" "example_provisioner" {
      provisioner "remote-exec" {
       inline = [
         "sudo cp ~/jenkinsaws.com /etc/nginx/conf.d/default.conf",
+        "sudo systemctl daemon-reload",
+        "sudo systemctl start jenkins",
         "sudo systemctl restart nginx",
+        "sudo systemctl start rundeck",
       ]
     }
   }
