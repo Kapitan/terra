@@ -73,16 +73,17 @@ resource "null_resource" "example_provisioner" {
     }
     provisioner "file" {
     #  source      = "conf/myapp.conf"
-     destination = "~/jenkinsaws.com"
-     content = "${templatefile("/home/user/terraform/testaws/nginx.tpl", {serverip = "${aws_instance.web.public_ip}"})}"
+     destination = "~/nginx.com"
+     content = "${templatefile("/home/user/terraform/testaws/nginx.tpl", {serverip = "${aws_instance.web.public_ip}"}, )}"
      }
      provisioner "remote-exec" {
       inline = [
-        "sudo cp ~/jenkinsaws.com /etc/nginx/conf.d/default.conf",
+        "sudo cp ~/nginx.com /etc/nginx/conf.d/default.conf",
         "sudo systemctl daemon-reload",
         "sudo systemctl start jenkins",
         "sudo systemctl restart nginx",
         "sudo systemctl start rundeck",
+        "cat /var/lib/jenkins/secrets/initialAdminPassword",
       ]
     }
   }
