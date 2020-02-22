@@ -69,7 +69,7 @@ resource "null_resource" "example_provisioner" {
   #       "sudo echo '${file("/home/user/terraform/testaws/run.service")}' > ~/rundeck.service",
   #       "sudo cp ~/nginx.repo /etc/yum.repos.d/nginx.repo",
   #       "sudo cp ~/rundeck.cfg /etc/rundeck.cfg",
-  #       "sudo cp ~/rundeck.service /lib/systemd/system/rundeck.service",
+  #       "sudo cp ~/rundeck.service /lib/systemd/system/rundeck.service",.
   #       "sudo yum -y install epel-release",
   #       "sudo yum -y install nginx",
   #       "sudo yum -y install wget",
