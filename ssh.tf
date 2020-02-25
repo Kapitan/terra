@@ -1,5 +1,5 @@
 resource "aws_security_group" "ssh" {
-    name = "thirdlesson"
+    name = "test_jenkins"
     description = "second hw group"
 
     ingress {

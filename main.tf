@@ -12,26 +12,35 @@
 #   }
 #   owners = ["679593333241"]
 # }
-resource "aws_instance" "web" {
-  ami = "${ami-0df0e7600ad0913a9}"
-  vpc_security_group_ids = ["${aws_security_group.ssh.id}"]
-  key_name = "${var.aws_key}"  
-  instance_type = "${var.itype}"
-  tags = {
-    Name = "second hw"
-  }
-  root_block_device {
-    delete_on_termination = true
+# resource "aws_instance" "web" {
+#   ami = "${ami-0df0e7600ad0913a9}"
+#   vpc_security_group_ids = ["${aws_security_group.ssh.id}"]
+#   key_name = "${var.aws_key}"  
+#   instance_type = "${var.itype}"
+#   tags = {
+#     Name = "second hw"
+#   }
+#   root_block_device {
+#     delete_on_termination = true
+#   }
+# }
+
+terraform {
+  backend "s3" {
+    bucket = "kapitantestbucket"
+    key    = "terraforrm.tfstate"
+    region = "eu-central-1"
   }
 }
 
-output "instance_ip_addr" {
-  value = "ssh -i ./.ssh/testkye.pem centos@${aws_instance.web.public_ip}"
-}
 
- resource "aws_vpc" "main" {
-   cidr_block = "10.0.0.0/16"
- }
+# output "instance_ip_addr" {
+#   value = "ssh -i ./.ssh/testkye.pem centos@${aws_instance.web.public_ip}"
+# }
+
+#  resource "aws_vpc" "main" {
+#    cidr_block = "10.0.0.0/16"
+#  }
 
 #  resource "aws_subnet" "main" {
 #    for_each = var.subent_numbers
